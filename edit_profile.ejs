@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit profile</title>
+</head>
+<body>
+
+    <style>
+        input:focus{
+            outline: none;
+        }
+    </style>
+
+    <form method="post" action="\edit_profile" id="edit_form">
+        <h1>Edit profile</h1>
+        <label for="edit_name">Name: </label>
+        <input type="text" name="edit_name" id="name" placeholder="Name..." value = <%= name %>><err></err><br>
+        <label for="edit_email">Email: </label>
+        <input type="email" name="edit_email" id="edit_email" placeholder="Email..." value = <%= email %>><err></err><br>
+        <label for="edit_password">Password: </label>
+        <input type="password" name="edit_password" id="edit_password" placeholder="Password..." value = <%= password %>><err></err><br>
+        <input type="submit" value="Submit" name="edit_submit" id="edit_submit">
+    </form>
+    <p><a href="../">Go back</a></p>
+
+    <script>
+
+        const validateEmail = (email) => {
+            return email.match(
+                /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            );
+        };
+        let good = true;
+        let name = document.getElementById('name')
+        let email = document.getElementById('edit_email')
+        let password = document.getElementById('edit_password')
+        let err = document.getElementsByTagName('err')
+        
+        email.onfocusout = function(){
+            if(!validateEmail(email.value))
+            {
+                email.style.border = "2px red solid";
+                good=false;
+                err[1].innerText = 'Invalid email'
+            }
+            else
+            {
+                email.style.border = "1px black solid"
+                good=true;
+                err[1].innerText = ""
+            }
+        }
+     
+        password.onkeyup = function(){
+            if(password.value.length > 20 || password.value.length < 8)
+            {
+                password.style.border = "2px red solid"
+                good=false;
+                password.value.length < 8 ? err[2].innerText = 'Password is too short' : err[2].innerText = 'Password is too long'
+            }
+            else 
+            {
+                password.style.border = "1px black solid"
+                good=true;
+                err[2].innerText = ''
+            }
+        }
+
+        submit = document.getElementById('edit_submit')
+        submit.onclick = function(event){
+            event.preventDefualt()
+            if(good && name.value != '' && email.value != '' && password.value != '')
+            {
+                const form = document.createElement('form');
+                form.setAttribute('action', '/edit_profile');
+                form.setAttribute('method', 'POST');
+                const body = document.body
+                const div = document.getElementById('edit_form')
+                body.replaceChild(form, div)
+                form.appendChild(div)
+                form.submit()
+            }
+        }
+    </script>
+
+</body>
+</html>

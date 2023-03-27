@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+
+    <style>
+        input:focus{
+            outline: none;
+        }
+    </style>
+
+    <div id="login_form">
+        <h1>Login</h1>
+        <label for="login_email">Email: </label>
+        <input type="email" name="login_email" id="login_email" placeholder="Email..." required><err></err><br>
+        <label for="login_password">Password: </label>
+        <input type="password" name="login_password" id="login_password" placeholder="Password..." required><err></err><br>
+        <input type="submit" value="Submit" name="login_submit" id="login_submit">
+    </div>
+
+    <script>
+
+        const validateEmail = (email) => {
+            return email.match(
+                /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            );
+        };
+        var good = false;
+        email = document.getElementById('login_email')
+        password = document.getElementById('login_password')
+        err = document.getElementsByTagName('err')
+        
+        email.onkeyup = function(){
+            if(!validateEmail(email.value))
+            {
+                email.style.border = "2px red solid";
+                good=false;
+                err[0].innerText = 'Invalid email'
+            }
+            else
+            {
+                email.style.border = "1px black solid"
+                good=true;
+                err[0].innerText = ""
+            }
+        }
+     
+        password.onkeyup = function(){
+            if(password.value.length > 20 || password.value.length < 8)
+            {
+                password.style.border = "2px red solid"
+                good=false;
+                password.value.length < 8 ? err[1].innerText = 'Password is too short' : err[1].innerText = 'Password is too long'
+            }
+            else 
+            {
+                password.style.border = "1px black solid"
+                good=true;
+                err[1].innerText = ''
+            }
+        }
+
+        submit = document.getElementById('login_submit')
+        submit.onclick = function(){
+            if(good)
+            {
+                form = document.createElement('form');
+                form.setAttribute('action', '/login');
+                form.setAttribute('method', 'POST');
+                form.setAttribute('autocomplete', 'off')
+                body = document.body
+                div = document.getElementById('login_form')
+                body.replaceChild(form, div)
+                form.appendChild(div)
+                form.submit()
+            }
+        }
+    </script>
+
+    <p><a href="../">Go back</a></p>
+</body>
+</html>

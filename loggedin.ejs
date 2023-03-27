@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - <%= name %> </title>
+</head>
+<body>
+
+    <style>
+        #delete_profile{
+            cursor: pointer;
+            text-decoration: underline;
+            color: darkblue;
+        }
+    </style>
+
+    <h1>Hello <%= name %> </h1>
+
+    <p><a href="/edit_profile">Edit</a></p>
+    <p id="delete_profile"><a>Delete</a></p>
+    <p><a href="/logout">Log out</a></p>
+
+    <script>
+        del = document.getElementById('delete_profile');
+
+        del.onclick = function(){
+            if(confirm("Are you sure you want to delete your account?"))
+            {
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", '/delete_account', true);
+                xhr.send({})
+                alert('Your account was successfully deleted')
+                location.assign('/')
+            }
+        }
+    </script>
+
+</body>
+</html>

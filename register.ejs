@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+<body>
+
+    <style>
+        input:focus{
+            outline: none;
+        }
+    </style>
+
+    <div id="register_form">
+        <h1>Register</h1>
+        <label for="register_name">Name: </label>
+        <input type="text" name="name" id="name" placeholder="Name..." required><br>
+        <label for="register_email">Email: </label>
+        <input type="email" name="register_email" id="register_email" placeholder="Email..." required><err></err><br>
+        <label for="register_password">Password: </label>
+        <input type="password" name="register_password" id="register_password" placeholder="Password..." required><err></err><br>
+        <input type="submit" value="Submit" name="register_submit" id="register_submit">
+    </form>
+    <p><a href="../">Go back</a></p>
+
+    <script>
+
+        const validateEmail = (email) => {
+            return email.match(
+                /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            );
+        };
+        var good = false;
+        name = document.getElementById('name')
+        email = document.getElementById('register_email')
+        password = document.getElementById('register_password')
+        err = document.getElementsByTagName('err')
+        
+        email.onkeyup = function(){
+            if(!validateEmail(email.value))
+            {
+                email.style.border = "2px red solid";
+                good=false;
+                err[0].innerText = 'Invalid email'
+            }
+            else
+            {
+                email.style.border = "1px black solid"
+                good=true;
+                err[0].innerText = ""
+            }
+        }
+     
+        password.onkeyup = function(){
+            if(password.value.length > 20 || password.value.length < 8)
+            {
+                password.style.border = "2px red solid"
+                good=false;
+                password.value.length < 8 ? err[1].innerText = 'Password is too short' : err[1].innerText = 'Password is too long'
+            }
+            else 
+            {
+                password.style.border = "1px black solid"
+                good=true;
+                err[1].innerText = ''
+            }
+        }
+
+        submit = document.getElementById('register_submit')
+        submit.onclick = function(){
+            if(good)
+            {
+                form = document.createElement('form');
+                form.setAttribute('action', '/register');
+                form.setAttribute('method', 'POST');
+                body = document.body
+                div = document.getElementById('register_form')
+                body.replaceChild(form, div)
+                form.appendChild(div)
+                form.submit()
+            }
+        }
+    </script>
+
+</body>
+</html>
